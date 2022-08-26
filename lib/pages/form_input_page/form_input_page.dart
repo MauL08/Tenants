@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:tenantsapp/core/config/app_config.dart';
 import 'package:tenantsapp/widgets/text_field_widget/text_field_widget.dart';
 
-class FormInputPage extends StatelessWidget {
+class FormInputPage extends StatefulWidget {
   FormInputPage({Key? key}) : super(key: key);
 
-  var formListrikList = [];
-  var formAirList = [];
+  @override
+  State<FormInputPage> createState() => _FormInputPageState();
+}
+
+class _FormInputPageState extends State<FormInputPage> {
+  var formListrikList = <Widget>[];
+  var formAirList = <Widget>[];
 
   @override
   Widget build(BuildContext context) {
@@ -170,128 +175,9 @@ class FormInputPage extends StatelessWidget {
               ListView.separated(
                 primary: false,
                 shrinkWrap: true,
-                itemCount: 1,
+                itemCount: formListrikList.length,
                 itemBuilder: (context, index) {
-                  return Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Column(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Nama Panel',
-                              style: heading4Style,
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            TextFieldWidget(
-                                hint: '', inputType: TextInputType.text),
-                          ],
-                        ),
-                        SizedBox(height: 8),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Pencatatan Meteran',
-                              style: heading4Style,
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            TextFieldWidget(
-                              hint: '',
-                              inputType: TextInputType.text,
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 8),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Photo',
-                              style: heading4Style,
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  width:
-                                      MediaQuery.of(context).size.width / 1.5,
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.circular(paddingL),
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurface
-                                        .withOpacity(0.08),
-                                    border: Border.all(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSurface
-                                          .withOpacity(0.08),
-                                    ),
-                                  ),
-                                  child: Container(
-                                    padding: const EdgeInsets.only(bottom: 5),
-                                    decoration: BoxDecoration(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .surface,
-                                        borderRadius:
-                                            BorderRadius.circular(paddingL)),
-                                    child: TextField(
-                                      textInputAction: TextInputAction.search,
-                                      textAlignVertical:
-                                          TextAlignVertical.center,
-                                      maxLines: 1,
-                                      keyboardType: TextInputType.text,
-                                      onChanged: (v) {},
-                                      // controller: state.searchText,
-                                      style: normalTextStyle,
-                                      // onSubmitted: (v) {
-                                      //   state.getOrderList(context, 'all');
-                                      // },
-                                      decoration: const InputDecoration(
-                                        // hintText: "Search by No Order",
-                                        hintStyle: TextStyle(fontSize: 14),
-                                        alignLabelWithHint: true,
-                                        contentPadding:
-                                            EdgeInsets.all(paddingL),
-                                        border: InputBorder.none,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    padding: const EdgeInsets.all(10),
-                                    primary: COLOR_PRIMARY,
-                                  ),
-                                  onPressed: () {},
-                                  child: const Icon(
-                                    Icons.upload,
-                                    size: 28,
-                                  ),
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
+                  return formListrikWidget(context, index);
                 },
                 separatorBuilder: ((context, index) {
                   return Divider(
@@ -299,6 +185,18 @@ class FormInputPage extends StatelessWidget {
                   );
                 }),
               ),
+              formListrikList.isEmpty
+                  ? ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          formListrikList.add(
+                            formListrikWidget(context, 0),
+                          );
+                        });
+                      },
+                      child: Text('Tambah Form'),
+                    )
+                  : Container(),
               SizedBox(height: 12),
               const Padding(
                 padding: EdgeInsets.symmetric(
@@ -317,141 +215,9 @@ class FormInputPage extends StatelessWidget {
               ListView.separated(
                 primary: false,
                 shrinkWrap: true,
-                itemCount: 1,
+                itemCount: formAirList.length,
                 itemBuilder: (context, index) {
-                  return Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Column(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Lokasi',
-                              style: heading4Style,
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            TextFieldWidget(
-                                hint: '', inputType: TextInputType.text),
-                          ],
-                        ),
-                        SizedBox(height: 8),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'No. Seri',
-                              style: heading4Style,
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            TextFieldWidget(
-                                hint: '', inputType: TextInputType.text),
-                          ],
-                        ),
-                        SizedBox(height: 8),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Pencatatan Meteran Air',
-                              style: heading4Style,
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            TextFieldWidget(
-                                hint: '', inputType: TextInputType.text),
-                          ],
-                        ),
-                        SizedBox(height: 8),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Photo',
-                              style: heading4Style,
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  width:
-                                      MediaQuery.of(context).size.width / 1.5,
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.circular(paddingL),
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurface
-                                        .withOpacity(0.08),
-                                    border: Border.all(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSurface
-                                          .withOpacity(0.08),
-                                    ),
-                                  ),
-                                  child: Container(
-                                    padding: const EdgeInsets.only(bottom: 5),
-                                    decoration: BoxDecoration(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .surface,
-                                        borderRadius:
-                                            BorderRadius.circular(paddingL)),
-                                    child: TextField(
-                                      textInputAction: TextInputAction.search,
-                                      textAlignVertical:
-                                          TextAlignVertical.center,
-                                      maxLines: 1,
-                                      keyboardType: TextInputType.text,
-                                      onChanged: (v) {},
-                                      // controller: state.searchText,
-                                      style: normalTextStyle,
-                                      // onSubmitted: (v) {
-                                      //   state.getOrderList(context, 'all');
-                                      // },
-                                      decoration: const InputDecoration(
-                                        // hintText: "Search by No Order",
-                                        hintStyle: TextStyle(fontSize: 14),
-                                        alignLabelWithHint: true,
-                                        contentPadding:
-                                            EdgeInsets.all(paddingL),
-                                        border: InputBorder.none,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    padding: const EdgeInsets.all(10),
-                                    primary: COLOR_PRIMARY,
-                                  ),
-                                  onPressed: () {},
-                                  child: const Icon(
-                                    Icons.upload,
-                                    size: 28,
-                                  ),
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
+                  return formAirWidget(context, index);
                 },
                 separatorBuilder: ((context, index) {
                   return Divider(
@@ -459,6 +225,18 @@ class FormInputPage extends StatelessWidget {
                   );
                 }),
               ),
+              formAirList.isEmpty
+                  ? ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          formAirList.add(
+                            formAirWidget(context, 0),
+                          );
+                        });
+                      },
+                      child: Text('Tambah Form'),
+                    )
+                  : Container(),
               SizedBox(height: 12),
               const Padding(
                 padding: EdgeInsets.symmetric(
@@ -535,6 +313,315 @@ class FormInputPage extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget formListrikWidget(BuildContext context, int index) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade200,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Nama Panel',
+                style: heading4Style,
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              TextFieldWidget(hint: '', inputType: TextInputType.text),
+            ],
+          ),
+          SizedBox(height: 8),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Pencatatan Meteran',
+                style: heading4Style,
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              TextFieldWidget(
+                hint: '',
+                inputType: TextInputType.text,
+              ),
+            ],
+          ),
+          SizedBox(height: 8),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Photo',
+                style: heading4Style,
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width / 1.5,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(paddingL),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withOpacity(0.08),
+                      border: Border.all(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withOpacity(0.08),
+                      ),
+                    ),
+                    child: Container(
+                      padding: const EdgeInsets.only(bottom: 5),
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surface,
+                          borderRadius: BorderRadius.circular(paddingL)),
+                      child: TextField(
+                        textInputAction: TextInputAction.search,
+                        textAlignVertical: TextAlignVertical.center,
+                        maxLines: 1,
+                        keyboardType: TextInputType.text,
+                        onChanged: (v) {},
+                        // controller: state.searchText,
+                        style: normalTextStyle,
+                        // onSubmitted: (v) {
+                        //   state.getOrderList(context, 'all');
+                        // },
+                        decoration: const InputDecoration(
+                          // hintText: "Search by No Order",
+                          hintStyle: TextStyle(fontSize: 14),
+                          alignLabelWithHint: true,
+                          contentPadding: EdgeInsets.all(paddingL),
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.all(10),
+                      primary: COLOR_PRIMARY,
+                    ),
+                    onPressed: () {},
+                    child: const Icon(
+                      Icons.upload,
+                      size: 28,
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
+          SizedBox(
+            height: 12,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              formListrikList.length < 3
+                  ? ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          formListrikList.add(
+                            formListrikWidget(context, index),
+                          );
+                        });
+                      },
+                      child: Text('Tambah Form'),
+                    )
+                  : Container(),
+              SizedBox(
+                width: 8,
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Color.fromARGB(255, 255, 17, 0),
+                ),
+                onPressed: () {
+                  setState(() {
+                    formListrikList.removeAt(index);
+                  });
+                },
+                child: Text('Hapus Form'),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget formAirWidget(BuildContext context, int index) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade200,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Lokasi',
+                style: heading4Style,
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              TextFieldWidget(hint: '', inputType: TextInputType.text),
+            ],
+          ),
+          SizedBox(height: 8),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'No. Seri',
+                style: heading4Style,
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              TextFieldWidget(hint: '', inputType: TextInputType.text),
+            ],
+          ),
+          SizedBox(height: 8),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Pencatatan Meteran Air',
+                style: heading4Style,
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              TextFieldWidget(hint: '', inputType: TextInputType.text),
+            ],
+          ),
+          SizedBox(height: 8),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Photo',
+                style: heading4Style,
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width / 1.5,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(paddingL),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withOpacity(0.08),
+                      border: Border.all(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withOpacity(0.08),
+                      ),
+                    ),
+                    child: Container(
+                      padding: const EdgeInsets.only(bottom: 5),
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surface,
+                          borderRadius: BorderRadius.circular(paddingL)),
+                      child: TextField(
+                        textInputAction: TextInputAction.search,
+                        textAlignVertical: TextAlignVertical.center,
+                        maxLines: 1,
+                        keyboardType: TextInputType.text,
+                        onChanged: (v) {},
+                        // controller: state.searchText,
+                        style: normalTextStyle,
+                        // onSubmitted: (v) {
+                        //   state.getOrderList(context, 'all');
+                        // },
+                        decoration: const InputDecoration(
+                          // hintText: "Search by No Order",
+                          hintStyle: TextStyle(fontSize: 14),
+                          alignLabelWithHint: true,
+                          contentPadding: EdgeInsets.all(paddingL),
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.all(10),
+                      primary: COLOR_PRIMARY,
+                    ),
+                    onPressed: () {},
+                    child: const Icon(
+                      Icons.upload,
+                      size: 28,
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
+          SizedBox(
+            height: 12,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              formAirList.length < 3
+                  ? ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          formAirList.add(
+                            formAirWidget(context, index),
+                          );
+                        });
+                      },
+                      child: Text('Tambah Form'),
+                    )
+                  : Container(),
+              SizedBox(
+                width: 8,
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Color.fromARGB(255, 255, 17, 0),
+                ),
+                onPressed: () {
+                  setState(() {
+                    formAirList.removeAt(index);
+                  });
+                },
+                child: Text('Hapus Form'),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
