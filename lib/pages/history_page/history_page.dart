@@ -10,7 +10,7 @@ class HistoryPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: COLOR_PRIMARY,
-        title: Text('History'),
+        title: const Text('History'),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(24),
@@ -18,7 +18,55 @@ class HistoryPage extends StatelessWidget {
         ),
       ),
       drawer: DrawerPage(),
-      body: Container(),
+      body: SingleChildScrollView(
+        child: ListView.builder(
+          padding: EdgeInsets.all(8),
+          primary: false,
+          shrinkWrap: true,
+          itemBuilder: ((context, index) {
+            return Card(
+              child: ListTile(
+                onTap: () {},
+                title: Text(
+                  'Nama Tenant',
+                  style: heading4Style,
+                ),
+                subtitle: Text(
+                  'jam:mnt: dtk dd-mm-yyyy',
+                  style: normalTextStyle.copyWith(
+                    fontSize: 11,
+                  ),
+                ),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.green.shade100,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        'Approve SPV',
+                        style: normalTextStyle.copyWith(
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      size: 18,
+                      color: COLOR_PRIMARY,
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }),
+          itemCount: 20,
+        ),
+      ),
     );
   }
 }
