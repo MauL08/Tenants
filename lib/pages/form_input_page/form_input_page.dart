@@ -13,6 +13,9 @@ class _FormInputPageState extends State<FormInputPage> {
   var formListrikList = <Widget>[];
   var formAirList = <Widget>[];
 
+  DateTime dateAwal = DateTime(2022, 1, 1);
+  DateTime dateAkhir = DateTime(2022, 1, 1);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +52,7 @@ class _FormInputPageState extends State<FormInputPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text('Awal'),
                       SizedBox(height: 4),
@@ -79,13 +82,11 @@ class _FormInputPageState extends State<FormInputPage> {
                             maxLines: 1,
                             keyboardType: TextInputType.text,
                             onChanged: (v) {},
-                            // controller: state.searchText,
                             style: normalTextStyle,
-                            // onSubmitted: (v) {
-                            //   state.getOrderList(context, 'all');
-                            // },
-                            decoration: const InputDecoration(
-                              // hintText: "Search by No Order",
+                            decoration: InputDecoration(
+                              enabled: false,
+                              hintText:
+                                  "${dateAwal.day}/${dateAwal.month}/${dateAwal.year}",
                               hintStyle: TextStyle(fontSize: 14),
                               alignLabelWithHint: true,
                               contentPadding: EdgeInsets.all(paddingL),
@@ -94,6 +95,21 @@ class _FormInputPageState extends State<FormInputPage> {
                           ),
                         ),
                       ),
+                      ElevatedButton(
+                        onPressed: () async {
+                          DateTime? newDateAwal = await showDatePicker(
+                            context: context,
+                            initialDate: dateAwal,
+                            firstDate: DateTime(2000),
+                            lastDate: DateTime(2100),
+                          );
+                          if (newDateAwal == null) return;
+                          setState(() {
+                            dateAwal = newDateAwal;
+                          });
+                        },
+                        child: Text('Pilih Tanggal'),
+                      )
                     ],
                   ),
                   Text(
@@ -101,7 +117,7 @@ class _FormInputPageState extends State<FormInputPage> {
                     style: heading3Style,
                   ),
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text('Akhir'),
                       SizedBox(height: 4),
@@ -131,13 +147,11 @@ class _FormInputPageState extends State<FormInputPage> {
                             maxLines: 1,
                             keyboardType: TextInputType.text,
                             onChanged: (v) {},
-                            // controller: state.searchText,
                             style: normalTextStyle,
-                            // onSubmitted: (v) {
-                            //   state.getOrderList(context, 'all');
-                            // },
-                            decoration: const InputDecoration(
-                              // hintText: "Search by No Order",
+                            decoration: InputDecoration(
+                              enabled: false,
+                              hintText:
+                                  "${dateAkhir.day}/${dateAkhir.month}/${dateAkhir.year}",
                               hintStyle: TextStyle(fontSize: 14),
                               alignLabelWithHint: true,
                               contentPadding: EdgeInsets.all(paddingL),
@@ -146,6 +160,21 @@ class _FormInputPageState extends State<FormInputPage> {
                           ),
                         ),
                       ),
+                      ElevatedButton(
+                        onPressed: () async {
+                          DateTime? newDateAkhir = await showDatePicker(
+                            context: context,
+                            initialDate: dateAkhir,
+                            firstDate: DateTime(2000),
+                            lastDate: DateTime(2100),
+                          );
+                          if (newDateAkhir == null) return;
+                          setState(() {
+                            dateAkhir = newDateAkhir;
+                          });
+                        },
+                        child: Text('Pilih Tanggal'),
+                      )
                     ],
                   )
                 ],
