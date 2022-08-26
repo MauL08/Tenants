@@ -20,6 +20,7 @@ class HistoryPage extends StatelessWidget {
       ),
       drawer: DrawerPage(),
       body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         child: ListView.builder(
           padding: EdgeInsets.all(8),
           primary: false,
