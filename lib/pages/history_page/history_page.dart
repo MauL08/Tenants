@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tenantsapp/core/config/app_config.dart';
+import 'package:tenantsapp/pages/drawer_page/drawer_page.dart';
 
 class HistoryPage extends StatelessWidget {
   const HistoryPage({Key? key}) : super(key: key);
@@ -16,7 +17,7 @@ class HistoryPage extends StatelessWidget {
           ),
         ),
       ),
-      drawer: Drawer(),
+      drawer: DrawerPage(),
       body: Container(),
     );
   }
