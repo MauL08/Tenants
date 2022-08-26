@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tenantsapp/core/config/app_config.dart';
 import 'package:tenantsapp/pages/drawer_page/drawer_page.dart';
+import 'package:tenantsapp/pages/tenant_page/tenant_page.dart';
 
 class HistoryPage extends StatelessWidget {
   const HistoryPage({Key? key}) : super(key: key);
@@ -26,7 +27,11 @@ class HistoryPage extends StatelessWidget {
           itemBuilder: ((context, index) {
             return Card(
               child: ListTile(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return TenantPage();
+                  }));
+                },
                 title: Text(
                   'Nama Tenant',
                   style: heading4Style,

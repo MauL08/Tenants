@@ -11,61 +11,71 @@ class DrawerPage extends StatelessWidget {
     return Drawer(
       child: SafeArea(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const SizedBox(height: 16),
-            CircleAvatar(
-              radius: 84,
-              backgroundImage: AssetImage('assets/images/blank_image.png'),
-            ),
-            SizedBox(height: 16),
-            Text(
-              'Nama User',
-              style: heading4Style,
-            ),
-            const SizedBox(height: 16),
-            const Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 16,
-              ),
-              child: Divider(
-                thickness: 1,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'Menu',
-              style: heading2Style.copyWith(color: COLOR_PRIMARY),
-            ),
-            const SizedBox(height: 16),
-            Card(
-              child: ListTile(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return FormInputPage();
-                  }));
-                },
-                title: Text(
-                  'Form Input',
+            Column(
+              children: [
+                const SizedBox(height: 16),
+                CircleAvatar(
+                  radius: 84,
+                  backgroundImage: AssetImage('assets/images/blank_image.png'),
+                ),
+                SizedBox(height: 16),
+                Text(
+                  'Nama User',
                   style: heading4Style,
                 ),
-                trailing: Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 18,
-                  color: COLOR_PRIMARY,
+                const SizedBox(height: 16),
+                const Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16,
+                  ),
+                  child: Divider(
+                    thickness: 1,
+                  ),
                 ),
-              ),
+                const SizedBox(height: 16),
+                Text(
+                  'Menu',
+                  style: heading2Style.copyWith(color: COLOR_PRIMARY),
+                ),
+                const SizedBox(height: 16),
+                Card(
+                  child: ListTile(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return FormInputPage();
+                      }));
+                    },
+                    title: Text(
+                      'Form Input',
+                      style: heading4Style,
+                    ),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      size: 18,
+                      color: COLOR_PRIMARY,
+                    ),
+                  ),
+                ),
+              ],
             ),
             SizedBox(height: 8),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Colors.red,
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 0, 12, 24),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Color.fromARGB(255, 255, 17, 0),
+                  minimumSize: const Size.fromHeight(50),
+                ),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return LoginPage();
+                  }));
+                },
+                child: Text('Log Out'),
               ),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return LoginPage();
-                }));
-              },
-              child: Text('Log Out'),
             ),
           ],
         ),
