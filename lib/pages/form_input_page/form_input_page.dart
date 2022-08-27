@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tenantsapp/core/config/app_config.dart';
 import 'package:tenantsapp/widgets/text_field_widget/text_field_widget.dart';
 
@@ -12,6 +16,9 @@ class FormInputPage extends StatefulWidget {
 class _FormInputPageState extends State<FormInputPage> {
   var formListrikList = <Widget>[];
   var formAirList = <Widget>[];
+
+  var localImage = '';
+  var localImageForm = '';
 
   DateTime dateAwal = DateTime(2022, 1, 1);
   DateTime dateAkhir = DateTime(2022, 1, 1);
@@ -283,13 +290,21 @@ class _FormInputPageState extends State<FormInputPage> {
               SizedBox(height: 8),
               GestureDetector(
                 onTap: (() async {
-                  // final pickedImagePath = await ImagePicker()
-                  //     .pickImage(source: ImageSource.gallery);
-                  // if (pickedImagePath != null) {
-                  //   inspect(pickedImagePath);
-                  //   subscriptionState.buktiBayarImagePath.value =
-                  //       pickedImagePath.path;
-                  // }
+                  final pickedImagePath = await ImagePicker()
+                      .pickImage(source: ImageSource.gallery);
+                  if (pickedImagePath != null) {
+                    final croppedImage = await ImageCropper().cropImage(
+                      sourcePath: pickedImagePath.path,
+                      aspectRatio: const CropAspectRatio(
+                        ratioX: 350,
+                        ratioY: 170,
+                      ),
+                      compressQuality: 100,
+                    );
+                    setState(() {
+                      localImage = croppedImage!.path;
+                    });
+                  }
                 }),
                 child: Container(
                   decoration: BoxDecoration(
@@ -310,11 +325,15 @@ class _FormInputPageState extends State<FormInputPage> {
                   width: double.infinity,
                   height: 150,
                   child: Center(
-                    child: Icon(
-                      Icons.upload,
-                      size: 36,
-                      color: Colors.grey.shade600,
-                    ),
+                    child: localImage == ''
+                        ? Icon(
+                            Icons.upload,
+                            size: 36,
+                            color: Colors.grey.shade600,
+                          )
+                        : Image.file(
+                            File(localImage),
+                          ),
                   ),
                 ),
               ),
@@ -395,58 +414,43 @@ class _FormInputPageState extends State<FormInputPage> {
                 style: heading4Style,
               ),
               SizedBox(
-                height: 4,
+                height: 16,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width / 1.5,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(paddingL),
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withOpacity(0.08),
-                      border: Border.all(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withOpacity(0.08),
-                      ),
-                    ),
-                    child: Container(
-                      padding: const EdgeInsets.only(bottom: 5),
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surface,
-                          borderRadius: BorderRadius.circular(paddingL)),
-                      child: TextField(
-                        textInputAction: TextInputAction.search,
-                        textAlignVertical: TextAlignVertical.center,
-                        maxLines: 1,
-                        keyboardType: TextInputType.text,
-                        onChanged: (v) {},
-                        // controller: state.searchText,
-                        style: normalTextStyle,
-                        // onSubmitted: (v) {
-                        //   state.getOrderList(context, 'all');
-                        // },
-                        decoration: const InputDecoration(
-                          // hintText: "Search by No Order",
-                          hintStyle: TextStyle(fontSize: 14),
-                          alignLabelWithHint: true,
-                          contentPadding: EdgeInsets.all(paddingL),
-                          border: InputBorder.none,
+                  localImageForm == ''
+                      ? Image.asset('assets/images/blank_image_long.png')
+                      : Container(
+                          height: 200,
+                          width: 200,
+                          child: Image.file(
+                            File(localImageForm),
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.all(10),
                       primary: COLOR_PRIMARY,
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      final pickedImagePath = await ImagePicker()
+                          .pickImage(source: ImageSource.gallery);
+                      if (pickedImagePath != null) {
+                        final croppedImage = await ImageCropper().cropImage(
+                          sourcePath: pickedImagePath.path,
+                          aspectRatio: const CropAspectRatio(
+                            ratioX: 200,
+                            ratioY: 200,
+                          ),
+                          compressQuality: 100,
+                        );
+                        setState(() {
+                          localImageForm = croppedImage!.path;
+                        });
+                      }
+                    },
                     child: const Icon(
                       Icons.upload,
                       size: 28,
@@ -460,7 +464,7 @@ class _FormInputPageState extends State<FormInputPage> {
             height: 12,
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               formListrikList.length < 3
                   ? ElevatedButton(
@@ -555,58 +559,43 @@ class _FormInputPageState extends State<FormInputPage> {
                 style: heading4Style,
               ),
               SizedBox(
-                height: 4,
+                height: 16,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width / 1.5,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(paddingL),
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withOpacity(0.08),
-                      border: Border.all(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withOpacity(0.08),
-                      ),
-                    ),
-                    child: Container(
-                      padding: const EdgeInsets.only(bottom: 5),
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surface,
-                          borderRadius: BorderRadius.circular(paddingL)),
-                      child: TextField(
-                        textInputAction: TextInputAction.search,
-                        textAlignVertical: TextAlignVertical.center,
-                        maxLines: 1,
-                        keyboardType: TextInputType.text,
-                        onChanged: (v) {},
-                        // controller: state.searchText,
-                        style: normalTextStyle,
-                        // onSubmitted: (v) {
-                        //   state.getOrderList(context, 'all');
-                        // },
-                        decoration: const InputDecoration(
-                          // hintText: "Search by No Order",
-                          hintStyle: TextStyle(fontSize: 14),
-                          alignLabelWithHint: true,
-                          contentPadding: EdgeInsets.all(paddingL),
-                          border: InputBorder.none,
+                  localImageForm == ''
+                      ? Image.asset('assets/images/blank_image_long.png')
+                      : Container(
+                          height: 200,
+                          width: 200,
+                          child: Image.file(
+                            File(localImageForm),
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.all(10),
                       primary: COLOR_PRIMARY,
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      final pickedImagePath = await ImagePicker()
+                          .pickImage(source: ImageSource.gallery);
+                      if (pickedImagePath != null) {
+                        final croppedImage = await ImageCropper().cropImage(
+                          sourcePath: pickedImagePath.path,
+                          aspectRatio: const CropAspectRatio(
+                            ratioX: 200,
+                            ratioY: 200,
+                          ),
+                          compressQuality: 100,
+                        );
+                        setState(() {
+                          localImageForm = croppedImage!.path;
+                        });
+                      }
+                    },
                     child: const Icon(
                       Icons.upload,
                       size: 28,
@@ -620,7 +609,7 @@ class _FormInputPageState extends State<FormInputPage> {
             height: 12,
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               formAirList.length < 3
                   ? ElevatedButton(
